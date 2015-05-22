@@ -39,11 +39,19 @@ class Position{
             default:
                 break;
         }
-
     }
 
+    public function getCordX()
+    {
+        return $this->cordX;
+    }
 
-    public function isSamePosition(Position $positionA, Position $positionB)
+    public function getCordY()
+    {
+        return $this->cordY;
+    }
+
+    public static function isSamePosition(Position $positionA, Position $positionB)
     {
         if($positionA->cordX == $positionB->cordX && $positionA->cordY == $positionB->cordY)
         {   //if both of the coordinates value are then same, then we can tell they are in the same position
@@ -102,5 +110,29 @@ class Position{
             default:
                 break;
         }
+    }
+
+    public function toString()
+    {
+        $orient = '';
+        switch($this->orientation)
+        {
+            case N:
+                $orient = 'N';
+                break;
+            case E:
+                $orient = 'E';
+                break;
+            case S:
+                $orient = 'S';
+                break;
+            case W:
+                $orient = 'W';
+                break;
+            default:
+                break;
+        }
+
+        return $this->cordX . ' ' . $this->cordY . ' ' . $orient;
     }
 }
