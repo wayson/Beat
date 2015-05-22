@@ -46,13 +46,4 @@ if(!empty($lawn))
 
     var_dump($last_positions);
 }
-//
-//$mower_position_arr = explode(' ', $input_arr[1]);
-//$path = $input_arr[2];
-//
-//$position = new Position($mower_position_arr[0], $mower_position_arr[1], $mower_position_arr[2]);
-//$mower = new Mower($position, $path);
-//
-//$mower->processWholePath();
-//
-//var_dump($mower->getCurrentPosition());
+

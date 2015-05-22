@@ -17,12 +17,93 @@ class Lawn
 
     private $longestPathLength;
 
+    private $coordinates;   //store the coordinates we need to process in part 2 for optimization
+
     public function __construct($cordX, $cordY)
     {
         $this->maxCordX = $cordX;
         $this->maxCordY = $cordY;
         $this->movers = array();
         $this->longestPathLength = 0;
+    }
+
+    /**
+     * Input the number of movers and we will optimize the movers to travers the lawn
+     * @param $numberOfMover    the number of mover we put it in
+     */
+    public function optimizeMoversWithNumber($numberOfMover)
+    {
+        $result = array(
+            'process_result' => true,
+            'error_message' => ''
+        );
+
+        if($numberOfMover > ($this->maxCordX + 1) * ($this->maxCordY + 1))
+        {
+            $result['process_result'] = false;
+            $result['error_message'] = 'Error: The number of movers should not greater than the positions in the lawn.';
+        }
+        elseif($numberOfMover <= 0)
+        {
+            $result['process_result'] = false;
+            $result['error_message'] = 'Error: Invalid mover number';
+        }
+        else
+        {
+            $coordinates = $this->initializeCoordinateArray($this->maxCordX, $this->maxCordY);
+
+            $processPositionsArray = array_chunk($coordinates, ceil(count($coordinates) / $numberOfMover));
+
+            foreach($processPositionsArray as $processPositions)
+            {
+                $mover = new Mower($processPositions);
+                $this->movers[] = $mover;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Initialized the coordinate arrays for chunking the positions to movers
+     */
+    private function initializeCoordinateArray($maxCordX, $maxCordY)
+    {
+        $coordinates = array();
+        //first of all, create an array to store the path of all positions in the lawn
+        $forward = true;
+        for($x = 0; $x <= $maxCordX; $x++)
+        {
+            if($forward == true)
+            {
+                for($y = 0; $y <= $maxCordY; $y++)
+                {
+                    $position = new Position($x, $y, 'N');
+                    if($y == $maxCordY)
+                    {
+                        $position->turnRight();
+                    }
+                    $coordinates[] = $position;
+                }
+
+                $forward = false;
+            }
+            else
+            {
+                for($y = $maxCordY; $y >= 0; $y--)
+                {
+                    $position = new Position($x, $y, 'S');
+                    if($y == 0)
+                    {
+                        $position->turnLeft();
+                    }
+                    $coordinates[] = $position;
+                }
+
+                $forward = true;
+            }
+        }
+
+        return $coordinates;
     }
 
     public function addMover(Mower $mover)
@@ -33,6 +114,17 @@ class Lawn
         {
             $this->longestPathLength = $mover->getPathLength();
         }
+    }
+
+    public function getAllMoverPathsInArray()
+    {
+        $mover_paths = array();
+        foreach($this->movers as $mover)
+        {
+            $mover_paths[$mover->getInitialPosition()->toString()] = $mover->getMovePath();
+        }
+
+        return $mover_paths;
     }
 
     public function getAllMoverLastPositionInArray()
@@ -117,8 +209,6 @@ class Lawn
         {
             $currentPosition = $mover->getCurrentPosition();
 
-//            var_dump($this->maxCordX);
-//            var_dump($currentPosition->getCordX());exit;
             if($currentPosition->getCordX() > $this->maxCordX ||
                 $currentPosition->getCordY() > $this->maxCordY ||
                 $currentPosition->getCordX() < 0 ||
@@ -130,7 +220,6 @@ class Lawn
             if(empty($position_arr[$currentPosition->getCordX()]))
             {
                 $position_arr[$currentPosition->getCordX()] = array();
-//                $position_arr[$currenPosition->getCordX()][$currenPosition->getCordY()] = 1;
             }
 
             if(empty($position_arr[$currentPosition->getCordX()][$currentPosition->getCordY()]))

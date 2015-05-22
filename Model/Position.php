@@ -15,7 +15,7 @@ class Position{
 
     private $cordX;
     private $cordY;
-    private $orientation;
+    private $orientation;   //integer
 
     public function __construct($cordX, $cordY, $orientation)
     {
@@ -51,6 +51,29 @@ class Position{
         return $this->cordY;
     }
 
+    public function getOrientation()
+    {
+        return $this->orientation;
+    }
+
+    public static function getPathBetweenTwoConsecutivePositions(Position $positionA, Position $positionB)
+    {
+        $returnPath = 'M';
+        if($positionA->getOrientation() != $positionB->getOrientation())
+        {
+            if($positionB->getOrientation() > $positionA->getOrientation())
+            {
+                $returnPath .= 'R';
+            }
+            else
+            {
+                $returnPath .= 'L';
+            }
+        }
+
+        return $returnPath;
+    }
+
     public static function isSamePosition(Position $positionA, Position $positionB)
     {
         if($positionA->cordX == $positionB->cordX && $positionA->cordY == $positionB->cordY)
@@ -81,12 +104,12 @@ class Position{
         }
     }
 
-    private function turnLeft()
+    public function turnLeft()
     {
         $this->orientation = ($this->orientation - 1) < N ? W : $this->orientation - 1;
     }
 
-    private function turnRight()
+    public function turnRight()
     {
         $this->orientation = ($this->orientation + 1) > W ? N : $this->orientation + 1;
     }
