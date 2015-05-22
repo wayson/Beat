@@ -40,10 +40,23 @@ if(!empty($lawn))
 {
     $result = $lawn->runMovers();
 
-    var_dump($result);
+    if($result['process_result'] == true)
+    {
+        $last_positions = $lawn->getAllMoverLastPositionInArray();
+        foreach($last_positions as $last_position)
+        {
+            echo $last_position . '<br/>';
+        }
+    }
+    else
+    {
+        echo $result['error_message'];
+    }
 
-    $last_positions = $lawn->getAllMoverLastPositionInArray();
-
-    var_dump($last_positions);
 }
+else
+{
+    echo 'Internal error.';
+}
+
 
