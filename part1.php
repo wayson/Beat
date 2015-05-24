@@ -6,9 +6,9 @@
  * Time: 10:42 AM
  */
 
-require_once '/Model/Lawn.php';
-require_once '/Model/Mower.php';
-require_once '/Model/Position.php';
+require_once 'Model/Lawn.php';
+require_once 'Model/Mower.php';
+require_once 'Model/Position.php';
 
 $input = $_POST['input_data'];
 

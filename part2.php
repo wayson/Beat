@@ -6,7 +6,7 @@
  * Time: 11:05 PM
  */
 
-require_once '/Model/Lawn.php';
+require_once 'Model/Lawn.php';
 
 $input = $_POST['input_data'];
 

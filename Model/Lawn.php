@@ -27,6 +27,11 @@ class Lawn
         $this->longestPathLength = 0;
     }
 
+    public function getMowers()
+    {
+        return $this->movers;
+    }
+
     /**
      * Input the number of movers and we will optimize the movers to travers the lawn
      * @param $numberOfMover    the number of mover we put it in
